@@ -6,30 +6,29 @@
 
 ---
 
-## 📌 현재 스프린트: Phase 1 (인프라 구축)
+## 📌 현재 스프린트: Phase 2 (Overlay Engine 구현)
 
 ### 이번 주 목표
-Phase 1 완료: 프로젝트 인프라 & 데이터 모델 준비
+Phase 2 시작: 핵심 Overlay System 프로토타입 구현
 
 ---
 
 ## 🔴 Today (우선순위 높음)
 
-### Phase 1: 의존성 설치 & 타입 정의
-- [ ] 필수 패키지 설치
-  - [ ] `npm install zustand framer-motion lucide-react`
-  - [ ] `npm install react-syntax-highlighter @types/react-syntax-highlighter`
-- [ ] `src/types/game.ts` 생성
-  - [ ] `Difficulty`, `GameState`, `CodeSection`, `Challenge` 타입 정의
-- [ ] `src/data/mockChallenges.ts` 생성
-  - [ ] 초기 샘플 챌린지 1개 (JavaScript React Hook 예제)
+### Phase 2: Overlay Engine 시작
+- [ ] `src/components/CodeViewer/` 디렉토리 구조 생성
+- [ ] `SyntaxLayer.tsx` 구현 (react-syntax-highlighter 래퍼)
+- [ ] `OverlayLayer.tsx` 기본 구조 작성
+- [ ] `CodeSection.tsx` 기본 인터랙티브 영역 구현
 
 ---
 
 ## 🟡 This Week (이번 주 내)
 
-- [ ] Mock Data 2개 추가 (TypeScript, Python 각 1개)
-- [ ] Phase 2 준비: `src/components/CodeViewer/` 디렉토리 구조 생성
+- [ ] CodeViewer 메인 컴포넌트 통합
+- [ ] Line-to-Pixel 매핑 로직 구현
+- [ ] 터치 이벤트 핸들링
+- [ ] 중첩 섹션 Z-Index 처리
 
 ---
 
@@ -52,6 +51,9 @@ Phase 1 완료: 프로젝트 인프라 & 데이터 모델 준비
 - [x] 2025-12-11: 프로젝트 스케폴딩 (Vite + React + TypeScript)
 - [x] 2025-12-11: Tailwind CSS 설정 및 DESIGN.md 기반 스타일 적용
 - [x] 2025-12-11: GitHub Pages 배포 설정 (GitHub Actions)
+- [x] 2025-12-11: **Phase 1 완료** - 필수 패키지 설치 (zustand, framer-motion, lucide-react, react-syntax-highlighter)
+- [x] 2025-12-11: **Phase 1 완료** - TypeScript 타입 정의 작성 (src/types/game.ts)
+- [x] 2025-12-11: **Phase 1 완료** - Mock 챌린지 데이터 3개 작성 (JavaScript, TypeScript, Python)
 
 ---
 
@@ -64,9 +66,9 @@ Phase 1 완료: 프로젝트 인프라 & 데이터 모델 준비
 - **CHANGELOG.md**: 무엇이 완료되었는지 (히스토리)
 
 ### 다음 단계
-1. 의존성 설치 완료
-2. 타입 정의 작성 (개발 가이드라인 확립)
-3. Phase 2 시작 (Overlay Engine - 가장 복잡한 부분)
+1. ✅ Phase 1 완료 - 인프라 및 타입 시스템 구축
+2. 🚀 Phase 2 시작 - Overlay Engine 구현 (핵심 기능)
+3. 📍 현재 위치: WORK_PLAN.md Phase 2 참조
 
 ---
 
