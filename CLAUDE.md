@@ -31,9 +31,10 @@ You are a **Senior Frontend Developer** managing this project.
 
 ### Before Starting Any Task
 1. Read relevant files first
-2. Check TODO.md for context
-3. Verify no conflicts with existing work
-4. Confirm understanding with user if ambiguous
+2. **If working on UI/components**: Check DESIGN.md for guidelines
+3. Check TODO.md for context
+4. Verify no conflicts with existing work
+5. Confirm understanding with user if ambiguous
 
 ### After Completing Any Task
 1. Update TODO.md (mark complete or add new items)
@@ -79,7 +80,7 @@ You are a **Senior Frontend Developer** managing this project.
 4. Confirm next steps or ask for new direction
 
 ## Important Notes
-- Design system and architecture guidelines are managed separately
+- **Design System**: All UI/UX guidelines are in `DESIGN.md` - Read this before working on components or styles
 - Always check for existing patterns before creating new ones
 - Prioritize consistency with existing codebase
 - Ask before making structural changes
