@@ -1,75 +1,188 @@
-import { useState } from 'react'
+/**
+ * App Component - Complete Game Flow
+ *
+ * Implements the full game loop: IDLE → PLAYING → RESULT
+ * Based on WORK_PLAN.md Phase 3
+ */
+
+import { useState } from 'react';
+import { Play } from 'lucide-react';
+import { CodeViewer } from './components/CodeViewer';
+import { Timer, ScoreBoard, ResultScreen } from './components/UI';
+import { useGameStore } from './store/gameStore';
+import { mockChallenges, getRandomChallenge } from './data/mockChallenges';
+import type { GameResult } from './types';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const {
+    currentChallenge,
+    selectedSectionIds,
+    timer,
+    score,
+    gameState,
+    startChallenge,
+    toggleSection,
+    submitReview,
+    nextChallenge,
+  } = useGameStore();
 
-  return (
-    <div className="min-h-screen flex items-center justify-center p-8">
-      <div className="max-w-4xl w-full">
-        {/* Header */}
-        <header className="mb-12 animate-fade-in">
-          <h1 className="mb-4">Vibe Pocket</h1>
-          <p className="text-stone-500 text-sm tracking-widest uppercase">
-            Experimental Project
-          </p>
+  const [lastResult, setLastResult] = useState<GameResult | null>(null);
+
+  // Handle start game
+  const handleStartGame = () => {
+    const challenge = getRandomChallenge();
+    startChallenge(challenge);
+  };
+
+  // Handle submit review
+  const handleSubmit = () => {
+    const result = submitReview();
+    setLastResult(result);
+  };
+
+  // Handle next challenge
+  const handleNext = () => {
+    const challenge = getRandomChallenge();
+    nextChallenge(challenge);
+    setLastResult(null);
+  };
+
+  // Handle retry
+  const handleRetry = () => {
+    if (currentChallenge) {
+      startChallenge(currentChallenge);
+      setLastResult(null);
+    }
+  };
+
+  // IDLE State - Welcome screen
+  if (gameState === 'IDLE') {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-8">
+        <div className="max-w-2xl w-full text-center animate-fade-in">
+          {/* Logo/Title */}
+          <header className="mb-12">
+            <h1 className="mb-4 text-6xl">POCKET.PR</h1>
+            <p className="text-stone-400 text-lg">
+              Debug with your Thumb.
+            </p>
+            <p className="text-stone-500 text-sm mt-2">
+              {mockChallenges.length} challenges available
+            </p>
+          </header>
+
+          {/* Start Button */}
+          <button
+            onClick={handleStartGame}
+            className="inline-flex items-center gap-3 bg-stone-200 hover:bg-white text-stone-950 px-8 py-4 rounded-md shadow-[0_0_15px_rgba(255,255,255,0.1)] transition-all font-bold text-lg"
+          >
+            <Play size={24} />
+            START GAME
+          </button>
+
+          {/* Info */}
+          <div className="mt-12 text-stone-500 text-sm">
+            <p>Find bugs in code snippets</p>
+            <p className="mt-1">Tap to select suspicious sections</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // PLAYING State - Active challenge
+  if (gameState === 'PLAYING' && currentChallenge) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        {/* Header - Fixed */}
+        <header className="bg-stone-950/80 backdrop-blur-md border-b border-stone-800 p-4 animate-fade-in">
+          <div className="max-w-4xl mx-auto flex items-center justify-between">
+            <Timer timeLeft={timer} timeLimit={currentChallenge.timeLimit} />
+            <ScoreBoard
+              score={score}
+              difficulty={currentChallenge.difficulty}
+            />
+          </div>
         </header>
 
-        {/* Main Content */}
-        <main className="animate-fade-in">
-          <div className="bg-stone-900/40 border border-stone-800 rounded-md p-8 mb-6">
-            <h2 className="mb-6">Welcome to Your Project</h2>
-
-            <div className="space-y-6">
-              {/* Counter Demo */}
-              <div className="flex items-center gap-4">
-                <button
-                  onClick={() => setCount(count - 1)}
-                  className="bg-stone-800 hover:bg-stone-700 text-stone-200 px-6 py-2 rounded-md transition-colors"
-                >
-                  -
-                </button>
-                <div className="font-mono text-2xl text-stone-100 min-w-[60px] text-center">
-                  {count}
-                </div>
-                <button
-                  onClick={() => setCount(count + 1)}
-                  className="bg-stone-200 hover:bg-white text-stone-950 px-6 py-2 rounded-md shadow-[0_0_15px_rgba(255,255,255,0.1)] transition-all"
-                >
-                  +
-                </button>
-              </div>
-
-              {/* Info */}
-              <div className="border-t border-stone-800 pt-6">
-                <p className="text-stone-400 text-sm">
-                  Built with React + TypeScript + Vite + Tailwind CSS
-                </p>
-                <p className="text-stone-500 text-xs mt-2">
-                  Following the design system defined in DESIGN.md
-                </p>
-              </div>
-            </div>
+        {/* Challenge Info */}
+        <div className="bg-stone-900/40 border-b border-stone-800 p-4 animate-fade-in">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-xl font-bold text-stone-100 mb-1">
+              {currentChallenge.title}
+            </h2>
+            {currentChallenge.description && (
+              <p className="text-sm text-stone-400">
+                {currentChallenge.description}
+              </p>
+            )}
           </div>
+        </div>
 
-          {/* Code Example */}
-          <div className="bg-stone-950/30 border border-stone-800 rounded-md p-6">
-            <div className="text-xs text-stone-500 uppercase tracking-widest mb-3">
-              Quick Start
+        {/* Main - Scrollable Code Viewer */}
+        <main className="flex-1 overflow-y-auto p-4 animate-fade-in">
+          <div className="max-w-4xl mx-auto">
+            <div className="bg-stone-900/40 border border-stone-800 rounded-md p-4">
+              <CodeViewer
+                challenge={currentChallenge}
+                selectedSectionIds={selectedSectionIds}
+                onSectionToggle={toggleSection}
+              />
             </div>
-            <pre className="font-mono text-sm text-stone-300 overflow-x-auto">
-              <code>{`npm install
-npm run dev`}</code>
-            </pre>
           </div>
         </main>
 
-        {/* Footer */}
-        <footer className="mt-12 text-center text-stone-600 text-sm">
-          <p>오직 바이브코딩만 사용하는 실험적 프로젝트입니다.</p>
+        {/* Footer - Fixed (Thumb Zone) */}
+        <footer className="bg-stone-950/80 backdrop-blur-md border-t border-stone-800 p-4 animate-fade-in">
+          <div className="max-w-4xl mx-auto">
+            <button
+              onClick={handleSubmit}
+              disabled={selectedSectionIds.length === 0}
+              className="w-full bg-stone-200 hover:bg-white disabled:bg-stone-800 disabled:text-stone-500 disabled:cursor-not-allowed text-stone-950 px-6 py-4 rounded-md shadow-[0_0_15px_rgba(255,255,255,0.1)] transition-all font-bold text-lg"
+            >
+              COMMIT REVIEW
+            </button>
+            <div className="mt-2 text-center text-xs text-stone-500">
+              {selectedSectionIds.length > 0
+                ? `${selectedSectionIds.length} section(s) selected`
+                : 'Select suspicious code sections'}
+            </div>
+          </div>
         </footer>
       </div>
-    </div>
-  )
+    );
+  }
+
+  // RESULT State - Review results
+  if (gameState === 'RESULT' && currentChallenge && lastResult) {
+    return (
+      <div className="min-h-screen p-4 lg:p-8">
+        <div className="max-w-4xl mx-auto">
+          {/* Header */}
+          <header className="mb-8 animate-fade-in">
+            <div className="flex items-center justify-between mb-4">
+              <h1 className="text-2xl font-bold">Review Results</h1>
+              <ScoreBoard score={score} />
+            </div>
+            <div className="text-sm text-stone-400">
+              {currentChallenge.title} ({currentChallenge.difficulty})
+            </div>
+          </header>
+
+          {/* Result Screen */}
+          <ResultScreen
+            result={lastResult}
+            challenge={currentChallenge}
+            onNext={handleNext}
+            onRetry={handleRetry}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  // Fallback
+  return null;
 }
 
-export default App
+export default App;

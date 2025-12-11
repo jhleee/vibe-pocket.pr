@@ -17,7 +17,7 @@
 
 ## Phase 1: 프로젝트 인프라 & 데이터 모델
 
-### 상태: ✅ 기본 스케폴딩 완료, 의존성 설치 필요
+### 상태: ✅ 완료 (2025-12-11)
 
 ### 1.1 의존성 설치 전략
 
@@ -80,7 +80,7 @@ export interface Challenge {
 
 ## Phase 2: Overlay Engine (핵심 기능)
 
-### 상태: ⏳ Pending
+### 상태: ✅ 완료 (2025-12-11)
 
 ### 2.1 아키텍처: 2-Layer System
 
@@ -207,7 +207,7 @@ className={cn(
 
 ## Phase 3: 게임 로직 & 상태 관리
 
-### 상태: ⏳ Pending (Phase 2 완료 후 시작)
+### 상태: ✅ 완료 (2025-12-11)
 
 ### 3.1 Zustand Store 설계
 
