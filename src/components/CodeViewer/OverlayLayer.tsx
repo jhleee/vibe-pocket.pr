@@ -27,14 +27,22 @@ export function OverlayLayer({
         zIndex: 10,
       }}
     >
-      {sections.map((section) => (
-        <CodeSection
-          key={section.id}
-          section={section}
-          isSelected={selectedSectionIds.includes(section.id)}
-          onToggle={onSectionToggle}
-        />
-      ))}
+      {sections.map((section) => {
+        const isSelected = selectedSectionIds.includes(section.id);
+        const selectionIndex = isSelected
+          ? selectedSectionIds.indexOf(section.id) + 1
+          : undefined;
+
+        return (
+          <CodeSection
+            key={section.id}
+            section={section}
+            isSelected={isSelected}
+            onToggle={onSectionToggle}
+            selectionIndex={selectionIndex}
+          />
+        );
+      })}
     </div>
   );
 }
