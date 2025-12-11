@@ -15,16 +15,14 @@ interface ResultScreenProps {
   result: GameResult;
   challenge: Challenge;
   selectedSectionIds: string[];
-  onNext: () => void;
-  onRetry: () => void;
+  onNext?: () => void;
+  onRetry?: () => void;
 }
 
 export function ResultScreen({
   result,
   challenge,
   selectedSectionIds,
-  onNext,
-  onRetry,
 }: ResultScreenProps) {
   const { correct, missedBugs, falsePositives, timeSpent } = result;
 
@@ -79,7 +77,7 @@ export function ResultScreen({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="space-y-6"
+      className="space-y-4 sm:space-y-6"
     >
       {/* Result Header */}
       <div className="text-center">
@@ -88,14 +86,14 @@ export function ResultScreen({
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ type: 'spring', bounce: 0.5 }}
-            className="inline-flex items-center gap-3 px-6 py-3 bg-green-500/20 border-2 border-green-400 rounded-lg"
+            className="inline-flex items-center gap-2 sm:gap-3 px-4 py-2 sm:px-6 sm:py-3 bg-green-500/20 border-2 border-green-400 rounded-lg"
           >
-            <CheckCircle size={32} className="text-green-400" />
+            <CheckCircle size={28} className="text-green-400 sm:w-8 sm:h-8" />
             <div className="text-left">
-              <div className="text-2xl font-bold text-green-400">
+              <div className="text-xl sm:text-2xl font-bold text-green-400">
                 Perfect! 🎉
               </div>
-              <div className="text-sm text-green-300">
+              <div className="text-xs sm:text-sm text-green-300">
                 All bugs found in {timeSpent}s
               </div>
             </div>
@@ -105,14 +103,14 @@ export function ResultScreen({
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ type: 'spring', bounce: 0.3 }}
-            className="inline-flex items-center gap-3 px-6 py-3 bg-red-500/20 border-2 border-red-400 rounded-lg"
+            className="inline-flex items-center gap-2 sm:gap-3 px-4 py-2 sm:px-6 sm:py-3 bg-red-500/20 border-2 border-red-400 rounded-lg"
           >
-            <XCircle size={32} className="text-red-400" />
+            <XCircle size={28} className="text-red-400 sm:w-8 sm:h-8" />
             <div className="text-left">
-              <div className="text-2xl font-bold text-red-400">
+              <div className="text-xl sm:text-2xl font-bold text-red-400">
                 Not Quite
               </div>
-              <div className="text-sm text-red-300">
+              <div className="text-xs sm:text-sm text-red-300">
                 {missedBugs.length > 0 && `Missed ${missedBugs.length} bug(s)`}
                 {missedBugs.length > 0 && falsePositives.length > 0 && ', '}
                 {falsePositives.length > 0 &&
@@ -125,16 +123,16 @@ export function ResultScreen({
 
       {/* Missed Bugs Alert */}
       {!correct && missedBugs.length > 0 && (
-        <div className="bg-red-500/10 border border-red-500/30 rounded-md p-4">
-          <div className="flex items-start gap-3">
-            <AlertCircle size={20} className="text-red-400 mt-0.5" />
+        <div className="bg-red-500/10 border border-red-500/30 rounded-md p-3 sm:p-4">
+          <div className="flex items-start gap-2 sm:gap-3">
+            <AlertCircle size={18} className="text-red-400 mt-0.5 sm:w-5 sm:h-5" />
             <div>
-              <div className="text-sm font-bold text-red-400 mb-1">
+              <div className="text-xs sm:text-sm font-bold text-red-400 mb-1">
                 Missed Bugs
               </div>
-              <div className="text-sm text-stone-300">
+              <div className="text-xs sm:text-sm text-stone-300">
                 You missed {missedBugs.length} bug(s). Check the explanation
-                below to understand what went wrong.
+                below.
               </div>
             </div>
           </div>
@@ -143,14 +141,14 @@ export function ResultScreen({
 
       {/* False Positives Alert */}
       {!correct && falsePositives.length > 0 && (
-        <div className="bg-amber-500/10 border border-amber-500/30 rounded-md p-4">
-          <div className="flex items-start gap-3">
-            <AlertCircle size={20} className="text-amber-400 mt-0.5" />
+        <div className="bg-amber-500/10 border border-amber-500/30 rounded-md p-3 sm:p-4">
+          <div className="flex items-start gap-2 sm:gap-3">
+            <AlertCircle size={18} className="text-amber-400 mt-0.5 sm:w-5 sm:h-5" />
             <div>
-              <div className="text-sm font-bold text-amber-400 mb-1">
+              <div className="text-xs sm:text-sm font-bold text-amber-400 mb-1">
                 False Positives
               </div>
-              <div className="text-sm text-stone-300">
+              <div className="text-xs sm:text-sm text-stone-300">
                 You selected {falsePositives.length} section(s) that weren't
                 bugs.
               </div>
@@ -160,8 +158,8 @@ export function ResultScreen({
       )}
 
       {/* Code Review Visualization */}
-      <div className="bg-stone-900/40 border border-stone-800 rounded-md p-4">
-        <div className="text-xs text-stone-500 uppercase tracking-widest mb-4">
+      <div className="bg-stone-900/40 border border-stone-800 rounded-md p-3 sm:p-4">
+        <div className="text-xs text-stone-500 uppercase tracking-widest mb-3 sm:mb-4">
           Code Review
         </div>
         <ResultCodeViewer
@@ -169,52 +167,37 @@ export function ResultScreen({
           result={result}
           selectedSectionIds={selectedSectionIds}
         />
-        <div className="mt-4 flex items-center gap-4 text-xs text-stone-400">
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-green-500/25 border-2 border-green-500 rounded"></div>
+        <div className="mt-3 sm:mt-4 flex flex-wrap items-center gap-3 sm:gap-4 text-xs text-stone-400">
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <div className="w-3 h-3 sm:w-4 sm:h-4 bg-green-500/25 border-2 border-green-500 rounded"></div>
             <span>Correct</span>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-red-500/25 border-2 border-red-500 rounded"></div>
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <div className="w-3 h-3 sm:w-4 sm:h-4 bg-red-500/25 border-2 border-red-500 rounded"></div>
             <span>Missed</span>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-amber-500/25 border-2 border-amber-500 rounded"></div>
-            <span>False Positive</span>
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <div className="w-3 h-3 sm:w-4 sm:h-4 bg-amber-500/25 border-2 border-amber-500 rounded"></div>
+            <span>False +</span>
           </div>
         </div>
       </div>
 
       {/* Explanation */}
-      <div className="bg-stone-900/40 border border-stone-800 rounded-md p-6">
-        <div className="text-xs text-stone-500 uppercase tracking-widest mb-4">
+      <div className="bg-stone-900/40 border border-stone-800 rounded-md p-4 sm:p-6">
+        <div className="text-xs text-stone-500 uppercase tracking-widest mb-3 sm:mb-4">
           Explanation
         </div>
         <div className="prose prose-invert prose-sm max-w-none">
           <div
-            className="text-stone-300 whitespace-pre-line"
+            className="text-sm sm:text-base text-stone-300 whitespace-pre-line"
             dangerouslySetInnerHTML={{ __html: challenge.explanation }}
           />
         </div>
       </div>
 
-      {/* Action Buttons */}
-      <div className="flex gap-4">
-        <button
-          onClick={onNext}
-          className="flex-1 bg-stone-200 hover:bg-white text-stone-950 px-6 py-3 rounded-md shadow-[0_0_15px_rgba(255,255,255,0.1)] transition-all font-bold"
-        >
-          NEXT CHALLENGE
-        </button>
-        {!correct && (
-          <button
-            onClick={onRetry}
-            className="bg-stone-800 hover:bg-stone-700 text-stone-200 px-6 py-3 rounded-md transition-colors font-bold"
-          >
-            RETRY
-          </button>
-        )}
-      </div>
+      {/* Spacer for fixed footer */}
+      <div className="h-24 sm:h-28"></div>
     </motion.div>
   );
 }

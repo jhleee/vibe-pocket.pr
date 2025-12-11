@@ -280,3 +280,99 @@ All notable changes to this project will be documented in this file.
 - "정답 선택하는게 너무 불편함" → Enhanced with glow, numbers, pulse
 - "결과 보여주는것도 너무 불친절함" → Visual code feedback with colors
 - "시각적 효과를 더 줘" → Confetti, animations, strong visual cues
+
+## [2025-12-11] - Mobile Layout Optimization
+
+### Changed
+- **App.tsx - PLAYING State Layout**
+  - Implemented PRD-specified viewport-based layout (15vh header, 55vh main, 30vh footer)
+  - Replaced flexible layout (`flex-1`) with fixed viewport heights for consistent mobile experience
+  - Combined Timer and Challenge Info into compact header (15vh + min-height 120px)
+  - Optimized main code area to 55vh with proper scrolling
+  - Expanded footer to 30vh (Thumb Zone) for easy one-handed interaction
+  - Added mobile-first padding (px-3 on mobile, sm:px-4 on larger screens)
+  - Implemented responsive text sizing (text-base → sm:text-lg pattern)
+  - Added `line-clamp-1` to prevent text overflow in header
+  - Increased button height (h-16 → sm:h-20) with min-height: 56-60px for better touch targets
+  - Added `active:` states for better touch feedback
+
+- **App.tsx - IDLE State**
+  - Replaced `min-h-screen` with `h-screen` for precise viewport control
+  - Removed max-width constraints for full mobile utilization
+  - Implemented responsive heading sizes (text-4xl → sm:text-5xl → md:text-6xl)
+  - Enhanced START GAME button with larger touch target (min-h-[60px])
+  - Added responsive icon sizing
+  - Optimized spacing for mobile (mb-8 → sm:mb-12)
+
+- **App.tsx - RESULT State**
+  - Implemented fixed header/footer layout with scrollable content
+  - Moved action buttons from scrollable area to fixed footer (Thumb Zone)
+  - Reduced header/footer padding for mobile (px-3 py-3 → sm:px-4 sm:py-4)
+  - Responsive typography throughout (text-lg → sm:text-xl, text-xs → sm:text-sm)
+  - Button layout optimized with flex gap for proper spacing
+  - Minimum button height: 56px for accessibility
+
+- **ResultScreen.tsx**
+  - Removed action buttons (moved to App.tsx footer)
+  - Added spacer div (h-24 → sm:h-28) to prevent content clipping by fixed footer
+  - Optimized all card padding (p-3 → sm:p-4, p-4 → sm:p-6)
+  - Responsive spacing throughout (space-y-4 → sm:space-y-6)
+  - Reduced icon sizes for mobile (size={28} with sm: variants)
+  - Responsive text in all alerts and headers (text-xs → sm:text-sm)
+  - Shortened legend labels for mobile ("False Positive" → "False +")
+  - Responsive gap spacing (gap-2 → sm:gap-3)
+
+### Added
+- **Landscape Orientation Warning**
+  - Automatic detection of device orientation using window dimensions
+  - Full-screen overlay when device is in landscape mode
+  - Animated RotateCcw icon with pulse effect
+  - Clear messaging: "Portrait Mode Only"
+  - User guidance to rotate device
+  - useEffect hooks for resize and orientationchange events
+  - Implemented with high z-index (z-50) to ensure visibility
+
+### Improved
+- **Touch Targets**
+  - All primary buttons meet 44x44px minimum (Apple HIG standard)
+  - Footer buttons: min-height 56-60px for easy thumb access
+  - Increased tap areas throughout IDLE and PLAYING states
+  - Better spacing between interactive elements (gap-3 → sm:gap-4)
+
+- **Mobile-First Responsive Design**
+  - Consistent breakpoint strategy (mobile default, sm: 640px+)
+  - Viewport-based heights (vh units) instead of percentage-based flex
+  - Proper overflow handling (h-screen with overflow-hidden)
+  - Reduced visual clutter with compact layouts
+  - Text always legible with minimum sizes (text-xs as baseline)
+
+- **PRD Compliance**
+  - ✅ Thumb Zone Strategy: All primary actions in bottom 30vh
+  - ✅ Minimum Touch Targets: 44x44px throughout
+  - ✅ Portrait Mode Enforcement: Landscape warning implemented
+  - ✅ Mobile-First Padding: 12px (px-3) on mobile, 16px (px-4) on tablets+
+  - ✅ Viewport Control: Fixed height layouts prevent content jumping
+
+### Technical Details
+- Import `RotateCcw` from lucide-react for orientation warning
+- Added `useEffect` with state management for orientation detection
+- Landscape check: `window.innerWidth > window.innerHeight`
+- Event listeners: resize, orientationchange
+- Proper cleanup in useEffect return
+- Optional props in ResultScreen interface (onNext?, onRetry?)
+
+### Tested
+- ✅ TypeScript compilation passes (npm run build)
+- ✅ Production build successful (vite build)
+- ✅ No unused variable warnings
+- ✅ All viewport-based layouts render correctly
+- ✅ Landscape warning triggers appropriately
+
+### User Impact
+📱 **Mobile Experience Drastically Improved**:
+- Consistent layout across all screen sizes
+- Easy one-handed operation with bottom-aligned buttons
+- No accidental scrolling or layout shifts
+- Portrait-only enforcement prevents awkward landscape use
+- Touch-friendly interface throughout application
+- Clear visual hierarchy with fixed header/footer sections
