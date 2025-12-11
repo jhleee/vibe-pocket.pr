@@ -94,3 +94,55 @@ All notable changes to this project will be documented in this file.
 - Project infrastructure established
 - Type system provides development guidelines
 - Sample challenges ready for Overlay Engine testing
+
+## [2025-12-11] - Phase 2 Complete: Overlay Engine
+
+### Added
+- **CodeViewer Component System** (`src/components/CodeViewer/`)
+  - `SyntaxLayer.tsx` - react-syntax-highlighter wrapper with Dracula theme
+    - Line numbers enabled
+    - Custom styling to match DESIGN.md
+    - Fixed line height (24px) for precise overlay alignment
+  - `CodeSection.tsx` - Individual selectable code areas
+    - Touch/click event handling
+    - Framer Motion animations for selection feedback
+    - Z-index calculation based on section size
+    - 44px minimum touch target (Apple HIG compliance)
+  - `OverlayLayer.tsx` - Container for all interactive sections
+    - Absolute positioning over syntax layer
+    - Z-index: 10 for layering
+  - `CodeViewer.tsx` - Main component integrating both layers
+  - `index.ts` - Component exports
+
+### Implemented
+- **2-Layer Overlay Architecture**
+  - Layer 1 (Bottom): Read-only syntax highlighted code
+  - Layer 2 (Top): Transparent interactive grid
+  - Fixed line-height positioning (24px)
+  - Section positioning using `startLine` and `endLine`
+
+- **Interactive Features**
+  - Click/tap to select code sections
+  - Visual feedback with Framer Motion
+  - Selected state: blue overlay (rgba(59, 130, 246, 0.2))
+  - Hover state: lighter blue overlay (desktop only)
+  - Tap animation: scale(0.98)
+
+- **App.tsx Test UI**
+  - Interactive demo with JavaScript Hook Rules challenge
+  - COMMIT REVIEW button for submission
+  - RESET button to clear selections
+  - Debug info panel showing selections and bug counts
+  - Alert feedback for correct/incorrect answers
+
+### Tested
+- Build passes with TypeScript strict mode
+- All components render without errors
+- Interactive selection works correctly
+- Z-index layering functions as designed
+
+### Milestone
+✅ **Phase 2 (Overlay Engine)** - Complete as defined in WORK_PLAN.md
+- Core 2-layer system fully functional
+- Touch-friendly interaction implemented
+- Ready for game state management integration
