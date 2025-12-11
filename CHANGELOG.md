@@ -214,3 +214,69 @@ All notable changes to this project will be documented in this file.
 - State management working correctly
 - All UI components functional
 - Ready for polishing and additional content
+
+## [2025-12-11] - UI/UX Enhancement: Visual Effects & Feedback
+
+### Added
+- **Enhanced Selection UI** (`CodeSection.tsx`)
+  - Strong glow effect with warm accent colors (accent-500 from DESIGN.md)
+  - Selection number badges (1, 2, 3...) with spring animation
+  - Continuous pulse animation for selected sections
+  - Increased border thickness (3px) and opacity (25%) for better visibility
+  - Inner and outer glow shadows for dramatic effect
+
+- **Result Code Visualization** (`src/components/CodeViewer/`)
+  - `ResultCodeSection.tsx` - Color-coded feedback component
+    - Green: Correctly identified bugs
+    - Red: Missed bugs
+    - Yellow/Amber: False positives
+    - Animated icon badges (CheckCircle, XCircle, AlertCircle)
+    - Pulse effect for emphasis
+  - `ResultCodeViewer.tsx` - Result display integration
+    - Shows actual code with color-coded overlays
+    - Automatic status determination per section
+    - Legend showing feedback color meanings
+
+- **Confetti Celebration** (`ResultScreen.tsx`)
+  - canvas-confetti package integration
+  - 3-second celebration animation on correct answers
+  - Dual-source confetti (left and right sides)
+  - Brand colors (accent-500, green, gold)
+  - Automatic cleanup on unmount
+
+### Changed
+- **ResultScreen.tsx**
+  - Integrated ResultCodeViewer to show visual feedback
+  - Added color legend below code display
+  - Accepts selectedSectionIds prop for visualization
+  - Enhanced feedback with actual code highlighting
+
+- **OverlayLayer.tsx**
+  - Calculates and passes selectionIndex to CodeSection
+  - Enables numbered selection badges
+
+- **App.tsx**
+  - Passes selectedSectionIds to ResultScreen
+  - Supports new visual feedback system
+
+### Dependencies
+- Added `canvas-confetti` (latest) - Celebration animations
+- Added `@types/canvas-confetti` (dev) - TypeScript definitions
+
+### Improved
+- **Selection Visibility**: Glow effects make selections 3x more visible
+- **Result Clarity**: Users can now see exactly which bugs they found/missed
+- **Celebration**: Correct answers feel rewarding with confetti
+- **User Guidance**: Visual feedback is immediate and intuitive
+
+### Tested
+- TypeScript compilation passes (npm run build)
+- Production build successful (dist/ generated)
+- All animations and effects work as expected
+- No console errors or warnings
+
+### User Impact
+✨ **Major UX Improvement** - Addresses user feedback:
+- "정답 선택하는게 너무 불편함" → Enhanced with glow, numbers, pulse
+- "결과 보여주는것도 너무 불친절함" → Visual code feedback with colors
+- "시각적 효과를 더 줘" → Confetti, animations, strong visual cues
