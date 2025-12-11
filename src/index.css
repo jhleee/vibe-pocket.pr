@@ -3,37 +3,168 @@
 @tailwind utilities;
 
 @layer base {
+  /* CSS Custom Properties for semantic colors */
+  :root {
+    /* Backgrounds */
+    --color-bg-primary: #0A0908;
+    --color-bg-secondary: #161412;
+    --color-bg-tertiary: #221F1D;
+    --color-bg-hover: #2A2724;
+
+    /* Borders */
+    --color-border-subtle: #2A2724;
+    --color-border-default: #3D3935;
+    --color-border-strong: #524D48;
+
+    /* Text */
+    --color-text-primary: #F5F2EE;
+    --color-text-secondary: #D4CFC8;
+    --color-text-tertiary: #8E8880;
+    --color-text-disabled: #5A5550;
+
+    /* Accent */
+    --color-accent-primary: #D97757;
+    --color-accent-hover: #E68B6D;
+    --color-accent-subtle: #4A3428;
+  }
+
   body {
-    @apply bg-stone-950 text-stone-300 font-sans antialiased;
+    @apply bg-neutral-950 text-neutral-300 font-sans antialiased;
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-serif font-light;
-  }
-
+  /* Typography */
   h1 {
-    @apply text-4xl text-stone-100;
+    @apply text-4xl font-semibold tracking-tight text-neutral-100;
   }
 
   h2 {
-    @apply text-xl text-stone-200;
+    @apply text-3xl font-semibold tracking-tight text-neutral-100;
   }
 
-  /* Custom Scrollbar */
+  h3 {
+    @apply text-xl font-semibold text-neutral-100;
+  }
+
+  h4 {
+    @apply text-lg font-semibold text-neutral-200;
+  }
+
+  h5, h6 {
+    @apply text-base font-semibold text-neutral-200;
+  }
+
+  /* Links */
+  a {
+    @apply text-accent-500 hover:text-accent-400 transition-colors duration-150;
+  }
+
+  /* Code */
+  code {
+    @apply font-mono text-sm;
+  }
+
+  /* Custom Scrollbar (Minimal Design) */
   ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 8px;
+    height: 8px;
   }
 
   ::-webkit-scrollbar-track {
-    background: transparent;
+    @apply bg-transparent;
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-stone-800 rounded;
+    @apply bg-neutral-700 rounded-full;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-stone-700;
+    @apply bg-neutral-600;
+  }
+
+  /* Firefox Scrollbar */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: theme('colors.neutral.700') transparent;
+  }
+}
+
+@layer components {
+  /* Typography Utilities */
+  .text-display {
+    @apply text-5xl font-semibold tracking-tight text-neutral-100;
+  }
+
+  .text-h1 {
+    @apply text-4xl font-semibold tracking-tight text-neutral-100;
+  }
+
+  .text-h2 {
+    @apply text-3xl font-semibold tracking-tight text-neutral-100;
+  }
+
+  .text-h3 {
+    @apply text-xl font-semibold text-neutral-100;
+  }
+
+  .text-body-lg {
+    @apply text-base text-neutral-300;
+  }
+
+  .text-body {
+    @apply text-sm text-neutral-300;
+  }
+
+  .text-body-sm {
+    @apply text-xs text-neutral-300;
+  }
+
+  .text-caption {
+    @apply text-xs font-medium text-neutral-500;
+  }
+
+  .text-label {
+    @apply text-xs font-semibold uppercase tracking-wider text-neutral-500;
+  }
+
+  /* Button Base Styles */
+  .btn {
+    @apply px-4 py-2 font-medium text-sm rounded-lg transition-all duration-150;
+    @apply focus:outline-none focus:ring-2 focus:ring-accent-500/40;
+  }
+
+  .btn-primary {
+    @apply bg-accent-500 hover:bg-accent-400 text-white;
+    @apply shadow-sm hover:shadow-md;
+  }
+
+  .btn-secondary {
+    @apply bg-neutral-850 hover:bg-neutral-800 text-neutral-200;
+    @apply border border-neutral-700 hover:border-neutral-600;
+  }
+
+  .btn-ghost {
+    @apply px-3 py-1.5 text-neutral-400 hover:text-neutral-200;
+    @apply hover:bg-neutral-850;
+  }
+
+  /* Card Base Styles */
+  .card {
+    @apply bg-neutral-900 border border-neutral-700 rounded-xl p-6;
+    @apply hover:border-neutral-600 transition-colors duration-200;
+  }
+
+  .card-glass {
+    @apply bg-neutral-900/60 backdrop-blur-md;
+    @apply border border-neutral-700/50 rounded-xl p-6 shadow-xl;
+  }
+
+  /* Input Base Styles */
+  .input {
+    @apply w-full px-4 py-2.5 bg-neutral-900;
+    @apply border border-neutral-700 rounded-lg;
+    @apply text-neutral-200 placeholder:text-neutral-500;
+    @apply focus:outline-none focus:border-accent-500;
+    @apply focus:ring-2 focus:ring-accent-500/20;
+    @apply transition-all duration-150;
   }
 }
