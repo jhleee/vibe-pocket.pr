@@ -1,75 +1,118 @@
-import { useState } from 'react'
+/**
+ * App Component - Overlay Engine Test
+ *
+ * Testing Phase 2: Core Overlay System
+ */
+
+import { useState } from 'react';
+import { CodeViewer } from './components/CodeViewer';
+import { jsHookRulesChallenge } from './data/mockChallenges';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [selectedSectionIds, setSelectedSectionIds] = useState<string[]>([]);
+  const challenge = jsHookRulesChallenge;
+
+  const handleSectionToggle = (sectionId: string) => {
+    setSelectedSectionIds((prev) =>
+      prev.includes(sectionId)
+        ? prev.filter((id) => id !== sectionId)
+        : [...prev, sectionId]
+    );
+  };
+
+  const handleSubmit = () => {
+    const bugSections = challenge.sections.filter((s) => s.isBug);
+    const correctSelections = bugSections.filter((s) =>
+      selectedSectionIds.includes(s.id)
+    );
+    const missedBugs = bugSections.filter(
+      (s) => !selectedSectionIds.includes(s.id)
+    );
+    const falsePositives = selectedSectionIds.filter(
+      (id) => !bugSections.find((s) => s.id === id)
+    );
+
+    const isCorrect =
+      correctSelections.length === bugSections.length &&
+      selectedSectionIds.length === bugSections.length;
+
+    console.log('=== SUBMISSION RESULT ===');
+    console.log('Correct:', isCorrect);
+    console.log('Selected:', selectedSectionIds);
+    console.log('Bugs:', bugSections.map((s) => s.id));
+    console.log('Missed bugs:', missedBugs.map((s) => s.id));
+    console.log('False positives:', falsePositives);
+
+    alert(
+      isCorrect
+        ? '🎉 Correct! All bugs found!'
+        : `❌ Incorrect.\nMissed: ${missedBugs.length}\nFalse positives: ${falsePositives.length}`
+    );
+  };
+
+  const handleReset = () => {
+    setSelectedSectionIds([]);
+  };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-8">
-      <div className="max-w-4xl w-full">
+    <div className="min-h-screen p-4 lg:p-8">
+      <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <header className="mb-12 animate-fade-in">
-          <h1 className="mb-4">Vibe Pocket</h1>
-          <p className="text-stone-500 text-sm tracking-widest uppercase">
-            Experimental Project
+        <header className="mb-8 animate-fade-in">
+          <h1 className="mb-2">Phase 2: Overlay Engine Test</h1>
+          <p className="text-stone-400 text-sm">
+            {challenge.title} ({challenge.difficulty})
           </p>
+          {challenge.description && (
+            <p className="text-stone-500 text-sm mt-1">
+              {challenge.description}
+            </p>
+          )}
         </header>
 
-        {/* Main Content */}
-        <main className="animate-fade-in">
-          <div className="bg-stone-900/40 border border-stone-800 rounded-md p-8 mb-6">
-            <h2 className="mb-6">Welcome to Your Project</h2>
-
-            <div className="space-y-6">
-              {/* Counter Demo */}
-              <div className="flex items-center gap-4">
-                <button
-                  onClick={() => setCount(count - 1)}
-                  className="bg-stone-800 hover:bg-stone-700 text-stone-200 px-6 py-2 rounded-md transition-colors"
-                >
-                  -
-                </button>
-                <div className="font-mono text-2xl text-stone-100 min-w-[60px] text-center">
-                  {count}
-                </div>
-                <button
-                  onClick={() => setCount(count + 1)}
-                  className="bg-stone-200 hover:bg-white text-stone-950 px-6 py-2 rounded-md shadow-[0_0_15px_rgba(255,255,255,0.1)] transition-all"
-                >
-                  +
-                </button>
-              </div>
-
-              {/* Info */}
-              <div className="border-t border-stone-800 pt-6">
-                <p className="text-stone-400 text-sm">
-                  Built with React + TypeScript + Vite + Tailwind CSS
-                </p>
-                <p className="text-stone-500 text-xs mt-2">
-                  Following the design system defined in DESIGN.md
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Code Example */}
-          <div className="bg-stone-950/30 border border-stone-800 rounded-md p-6">
-            <div className="text-xs text-stone-500 uppercase tracking-widest mb-3">
-              Quick Start
-            </div>
-            <pre className="font-mono text-sm text-stone-300 overflow-x-auto">
-              <code>{`npm install
-npm run dev`}</code>
-            </pre>
+        {/* CodeViewer - Main Test Area */}
+        <main className="mb-8 animate-fade-in">
+          <div className="bg-stone-900/40 border border-stone-800 rounded-md p-4">
+            <CodeViewer
+              challenge={challenge}
+              selectedSectionIds={selectedSectionIds}
+              onSectionToggle={handleSectionToggle}
+            />
           </div>
         </main>
 
-        {/* Footer */}
-        <footer className="mt-12 text-center text-stone-600 text-sm">
-          <p>오직 바이브코딩만 사용하는 실험적 프로젝트입니다.</p>
+        {/* Controls */}
+        <footer className="flex gap-4 animate-fade-in">
+          <button
+            onClick={handleSubmit}
+            className="flex-1 bg-stone-200 hover:bg-white text-stone-950 px-6 py-3 rounded-md shadow-[0_0_15px_rgba(255,255,255,0.1)] transition-all font-bold"
+          >
+            COMMIT REVIEW
+          </button>
+          <button
+            onClick={handleReset}
+            className="bg-stone-800 hover:bg-stone-700 text-stone-200 px-6 py-3 rounded-md transition-colors"
+          >
+            RESET
+          </button>
         </footer>
+
+        {/* Debug Info */}
+        <div className="mt-8 p-4 bg-stone-950/30 border border-stone-800 rounded-md">
+          <div className="text-xs text-stone-500 uppercase tracking-widest mb-3">
+            Debug Info
+          </div>
+          <div className="font-mono text-sm text-stone-300 space-y-1">
+            <div>Selected: {selectedSectionIds.join(', ') || 'None'}</div>
+            <div>
+              Total Sections: {challenge.sections.length} ({' '}
+              {challenge.sections.filter((s) => s.isBug).length} bugs )
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
