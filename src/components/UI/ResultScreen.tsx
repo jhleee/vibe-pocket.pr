@@ -4,13 +4,17 @@
  * Displays review results with explanation
  */
 
+import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { CheckCircle, XCircle, AlertCircle } from 'lucide-react';
+import confetti from 'canvas-confetti';
+import { ResultCodeViewer } from '../CodeViewer';
 import type { GameResult, Challenge } from '../../types';
 
 interface ResultScreenProps {
   result: GameResult;
   challenge: Challenge;
+  selectedSectionIds: string[];
   onNext: () => void;
   onRetry: () => void;
 }
@@ -18,10 +22,58 @@ interface ResultScreenProps {
 export function ResultScreen({
   result,
   challenge,
+  selectedSectionIds,
   onNext,
   onRetry,
 }: ResultScreenProps) {
   const { correct, missedBugs, falsePositives, timeSpent } = result;
+
+  // Confetti celebration for correct answers
+  useEffect(() => {
+    if (correct) {
+      // Delay confetti slightly for better effect
+      const timer = setTimeout(() => {
+        // Fire confetti from both sides
+        const duration = 3000;
+        const animationEnd = Date.now() + duration;
+        const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+        function randomInRange(min: number, max: number) {
+          return Math.random() * (max - min) + min;
+        }
+
+        const interval = setInterval(() => {
+          const timeLeft = animationEnd - Date.now();
+
+          if (timeLeft <= 0) {
+            return clearInterval(interval);
+          }
+
+          const particleCount = 50 * (timeLeft / duration);
+
+          // Left side
+          confetti({
+            ...defaults,
+            particleCount,
+            origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
+            colors: ['#D97757', '#E68B6D', '#FFB088', '#4CAF50', '#FFD700'],
+          });
+
+          // Right side
+          confetti({
+            ...defaults,
+            particleCount,
+            origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
+            colors: ['#D97757', '#E68B6D', '#FFB088', '#4CAF50', '#FFD700'],
+          });
+        }, 250);
+
+        return () => clearInterval(interval);
+      }, 300);
+
+      return () => clearTimeout(timer);
+    }
+  }, [correct]);
 
   return (
     <motion.div
@@ -106,6 +158,32 @@ export function ResultScreen({
           </div>
         </div>
       )}
+
+      {/* Code Review Visualization */}
+      <div className="bg-stone-900/40 border border-stone-800 rounded-md p-4">
+        <div className="text-xs text-stone-500 uppercase tracking-widest mb-4">
+          Code Review
+        </div>
+        <ResultCodeViewer
+          challenge={challenge}
+          result={result}
+          selectedSectionIds={selectedSectionIds}
+        />
+        <div className="mt-4 flex items-center gap-4 text-xs text-stone-400">
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 bg-green-500/25 border-2 border-green-500 rounded"></div>
+            <span>Correct</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 bg-red-500/25 border-2 border-red-500 rounded"></div>
+            <span>Missed</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 bg-amber-500/25 border-2 border-amber-500 rounded"></div>
+            <span>False Positive</span>
+          </div>
+        </div>
+      </div>
 
       {/* Explanation */}
       <div className="bg-stone-900/40 border border-stone-800 rounded-md p-6">

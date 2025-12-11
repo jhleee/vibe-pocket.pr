@@ -12,6 +12,7 @@ interface CodeSectionProps {
   section: CodeSectionType;
   isSelected: boolean;
   onToggle: (sectionId: string) => void;
+  selectionIndex?: number; // Position in selection order (1, 2, 3...)
 }
 
 // Line height constant (must match SyntaxLayer)
@@ -42,6 +43,7 @@ export function CodeSection({
   section,
   isSelected,
   onToggle,
+  selectionIndex,
 }: CodeSectionProps) {
   const { top, height } = calculatePosition(section);
   const zIndex = calculateZIndex(section);
@@ -64,10 +66,13 @@ export function CodeSection({
       initial={false}
       animate={{
         backgroundColor: isSelected
-          ? 'rgba(59, 130, 246, 0.2)' // bg-blue-500/20
+          ? 'rgba(217, 119, 87, 0.25)' // accent-500 with stronger opacity
           : 'transparent',
-        borderWidth: isSelected ? '2px' : '0px',
-        borderColor: isSelected ? 'rgb(96, 165, 250)' : 'transparent', // border-blue-400
+        borderWidth: isSelected ? '3px' : '0px',
+        borderColor: isSelected ? 'rgb(217, 119, 87)' : 'transparent', // accent-500
+        boxShadow: isSelected
+          ? '0 0 25px rgba(217, 119, 87, 0.6), inset 0 0 20px rgba(217, 119, 87, 0.2)'
+          : '0 0 0 rgba(217, 119, 87, 0)',
       }}
       whileTap={{ scale: 0.98 }}
       transition={{ duration: 0.2 }}
@@ -79,10 +84,42 @@ export function CodeSection({
         whileHover={{ opacity: 1 }}
         transition={{ duration: 0.15 }}
         style={{
-          backgroundColor: 'rgba(59, 130, 246, 0.1)', // hover:bg-blue-500/10
+          backgroundColor: 'rgba(217, 119, 87, 0.15)', // accent-500/15
           pointerEvents: 'none',
         }}
       />
+
+      {/* Selection Number Badge */}
+      {isSelected && selectionIndex !== undefined && (
+        <motion.div
+          className="absolute -left-2 -top-2 w-8 h-8 bg-accent-500 text-white rounded-full flex items-center justify-center font-bold text-sm shadow-lg"
+          initial={{ scale: 0, rotate: -180 }}
+          animate={{ scale: 1, rotate: 0 }}
+          exit={{ scale: 0, rotate: 180 }}
+          transition={{ type: 'spring', bounce: 0.5, duration: 0.4 }}
+        >
+          {selectionIndex}
+        </motion.div>
+      )}
+
+      {/* Pulse animation when selected */}
+      {isSelected && (
+        <motion.div
+          className="absolute inset-0 border-3 rounded-sm"
+          style={{
+            borderColor: 'rgb(217, 119, 87)',
+          }}
+          animate={{
+            opacity: [0.5, 0, 0.5],
+            scale: [1, 1.05, 1],
+          }}
+          transition={{
+            duration: 2,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          }}
+        />
+      )}
     </motion.div>
   );
 }

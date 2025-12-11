@@ -173,6 +173,7 @@ function App() {
           <ResultScreen
             result={lastResult}
             challenge={currentChallenge}
+            selectedSectionIds={selectedSectionIds}
             onNext={handleNext}
             onRetry={handleRetry}
           />
