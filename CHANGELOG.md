@@ -146,3 +146,71 @@ All notable changes to this project will be documented in this file.
 - Core 2-layer system fully functional
 - Touch-friendly interaction implemented
 - Ready for game state management integration
+
+## [2025-12-11] - Phase 3 Complete: Game Logic & State Management
+
+### Added
+- **Zustand Store** (`src/store/gameStore.ts`)
+  - Centralized game state management
+  - Game state machine: IDLE, PLAYING, RESULT
+  - Timer logic with automatic tick (1 second intervals)
+  - Section toggle functionality
+  - Submission and validation logic
+  - Score calculation with time bonus (base 100 + up to 50 time bonus)
+  - Next challenge and retry functionality
+
+- **UI Components** (`src/components/UI/`)
+  - `Timer.tsx` - Circular progress bar
+    - SVG-based circular countdown
+    - Color-coded urgency (blue → amber → red)
+    - Automatic tick integration with game store
+    - Digital time display (MM:SS format)
+  - `ScoreBoard.tsx` - Score and difficulty display
+    - Trophy icon with current score
+    - Difficulty badge with color coding (JUNIOR/SENIOR/EXPERT)
+  - `ResultScreen.tsx` - Post-review results
+    - Success/failure animation (Framer Motion)
+    - Missed bugs alert (red)
+    - False positives alert (amber)
+    - Explanation display with markdown support
+    - Next challenge and retry buttons
+
+### Implemented
+- **Complete Game Flow** (App.tsx)
+  - **IDLE State**: Welcome screen
+    - Project title and tagline
+    - Challenge count display
+    - START GAME button
+  - **PLAYING State**: Active gameplay
+    - Fixed header with Timer and ScoreBoard
+    - Challenge info section
+    - Scrollable CodeViewer (main area)
+    - Fixed footer with COMMIT REVIEW button (thumb zone)
+    - Selection count feedback
+  - **RESULT State**: Review results
+    - Result header with success/failure indication
+    - Alerts for missed bugs and false positives
+    - Full explanation display
+    - Navigation buttons (Next/Retry)
+
+- **Game Mechanics**
+  - Timer automatically decreases during PLAYING state
+  - Time's up triggers automatic RESULT state
+  - Correct answers add base score (100) + time bonus (up to 50)
+  - Random challenge selection
+  - Retry preserves current challenge
+  - Next challenge picks random from pool
+
+### Tested
+- Build passes with TypeScript strict mode
+- All game states transition correctly
+- Timer countdown functions properly
+- Score calculation verified
+- Result validation working (correct/missed/false positives)
+
+### Milestone
+✅ **Phase 3 (Game Logic)** - Complete as defined in WORK_PLAN.md
+- Full game loop operational (IDLE → PLAYING → RESULT)
+- State management working correctly
+- All UI components functional
+- Ready for polishing and additional content
