@@ -29,11 +29,11 @@ export function SyntaxLayer({ code, language }: SyntaxLayerProps) {
       }}
       customStyle={{
         margin: 0,
-        padding: '1rem',
+        padding: '0.75rem',
         background: '#282a36', // Dracula background
-        fontSize: '0.875rem', // text-sm
+        fontSize: '15px', // Mobile-optimized: larger for readability
         fontFamily: '"Fira Code", monospace',
-        lineHeight: '1.5rem', // 24px - important for overlay alignment
+        lineHeight: '22px', // Adjusted for new font size
         borderRadius: '0.375rem',
       }}
       codeTagProps={{
