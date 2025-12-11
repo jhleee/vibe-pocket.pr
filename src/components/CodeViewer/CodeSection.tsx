@@ -16,7 +16,7 @@ interface CodeSectionProps {
 }
 
 // Line height constant (must match SyntaxLayer)
-const LINE_HEIGHT = 24; // 1.5rem = 24px
+const LINE_HEIGHT = 22; // Must match SyntaxLayer lineHeight
 
 /**
  * Calculate z-index based on section size

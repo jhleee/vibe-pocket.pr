@@ -190,7 +190,7 @@ export function ResultScreen({
         </div>
         <div className="prose prose-invert prose-sm max-w-none">
           <div
-            className="text-sm sm:text-base text-stone-300 whitespace-pre-line"
+            className="text-base sm:text-lg text-stone-300 whitespace-pre-line leading-relaxed"
             dangerouslySetInnerHTML={{ __html: challenge.explanation }}
           />
         </div>

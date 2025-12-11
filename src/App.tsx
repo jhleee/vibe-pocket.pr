@@ -132,10 +132,10 @@ function App() {
   if (gameState === 'PLAYING' && currentChallenge) {
     return (
       <div className="h-screen flex flex-col overflow-hidden">
-        {/* Header - 10vh (Timer + Challenge Info) */}
-        <header className="h-[15vh] min-h-[120px] flex flex-col bg-stone-950/80 backdrop-blur-md border-b border-stone-800 animate-fade-in">
+        {/* Header - Compact */}
+        <header className="flex-shrink-0 bg-stone-950/80 backdrop-blur-md border-b border-stone-800 py-2 px-2 sm:px-3 animate-fade-in">
           {/* Timer & Score Row */}
-          <div className="flex items-center justify-between px-3 py-2 sm:px-4">
+          <div className="flex items-center justify-between mb-1">
             <Timer timeLeft={timer} timeLimit={currentChallenge.timeLimit} />
             <ScoreBoard
               score={score}
@@ -143,22 +143,15 @@ function App() {
             />
           </div>
 
-          {/* Challenge Info Row */}
-          <div className="flex-1 flex flex-col justify-center px-3 sm:px-4 pb-2">
-            <h2 className="text-base sm:text-lg font-bold text-stone-100 leading-tight line-clamp-1">
-              {currentChallenge.title}
-            </h2>
-            {currentChallenge.description && (
-              <p className="text-xs sm:text-sm text-stone-400 mt-0.5 line-clamp-1">
-                {currentChallenge.description}
-              </p>
-            )}
-          </div>
+          {/* Challenge Info - Single Line */}
+          <h2 className="text-sm sm:text-base font-semibold text-stone-100 line-clamp-1 px-1">
+            {currentChallenge.title}
+          </h2>
         </header>
 
-        {/* Main - 55vh (Scrollable Code Viewer) */}
-        <main className="h-[55vh] overflow-y-auto px-3 py-3 sm:px-4 sm:py-4 animate-fade-in">
-          <div className="bg-stone-900/40 border border-stone-800 rounded-md p-2 sm:p-4">
+        {/* Main - Maximum Code Space */}
+        <main className="flex-1 overflow-y-auto px-2 py-2 sm:px-3 sm:py-3 animate-fade-in">
+          <div className="bg-stone-900/40 border border-stone-800 rounded-md p-1.5 sm:p-3">
             <CodeViewer
               challenge={currentChallenge}
               selectedSectionIds={selectedSectionIds}
@@ -167,19 +160,19 @@ function App() {
           </div>
         </main>
 
-        {/* Footer - 30vh (Thumb Zone) */}
-        <footer className="h-[30vh] min-h-[180px] flex flex-col justify-center bg-stone-950/80 backdrop-blur-md border-t border-stone-800 px-3 sm:px-4 animate-fade-in">
+        {/* Footer - Compact Thumb Zone */}
+        <footer className="flex-shrink-0 bg-stone-950/80 backdrop-blur-md border-t border-stone-800 p-3 sm:p-4 animate-fade-in">
           <button
             onClick={handleSubmit}
             disabled={selectedSectionIds.length === 0}
-            className="w-full h-16 sm:h-20 bg-stone-200 hover:bg-white active:bg-stone-300 disabled:bg-stone-800 disabled:text-stone-500 disabled:cursor-not-allowed text-stone-950 px-6 rounded-lg shadow-[0_0_20px_rgba(255,255,255,0.15)] transition-all font-bold text-lg sm:text-xl"
+            className="w-full h-14 sm:h-16 bg-stone-200 hover:bg-white active:bg-stone-300 disabled:bg-stone-800 disabled:text-stone-500 disabled:cursor-not-allowed text-stone-950 px-4 rounded-lg shadow-[0_0_20px_rgba(255,255,255,0.15)] transition-all font-bold text-base sm:text-lg"
           >
             COMMIT REVIEW
           </button>
-          <div className="mt-3 text-center text-xs sm:text-sm text-stone-500">
+          <div className="mt-2 text-center text-xs text-stone-500">
             {selectedSectionIds.length > 0
-              ? `${selectedSectionIds.length} section(s) selected`
-              : 'Tap suspicious code sections above'}
+              ? `${selectedSectionIds.length} selected`
+              : 'Tap code to select'}
           </div>
         </footer>
       </div>
